@@ -1,0 +1,52 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Git Push Recovery",
+			"type": "shell",
+			"command": "cd /Users/tanishqsuryas/Documents/IOT && git status --short && echo '---' && git diff -- README.md",
+			"args": [],
+			"isBackground": false
+		},
+		{
+			"label": "Resolve README Conflict and Push",
+			"type": "shell",
+			"command": "cd /Users/tanishqsuryas/Documents/IOT && python3 - <<'PY'\ncontent = '''# AgroMind - Dual-Zone Smart Irrigation Platform\n\nAgroMind is a production-style smart irrigation stack for Indian agriculture using dual-zone crop-aware logic, MQTT real-time telemetry, and AI guidance.\n\n## What is implemented\n\n- Next.js 14 frontend with dual-zone pages:\n  - `/onboarding`, `/dashboard`, `/farm-3d`, `/crop-advisor`, `/predict`, `/control`, `/analytics`, `/report`, `/alerts`, `/settings`, `/docs`\n- Indian crop intelligence dataset at `frontend/src/data/indian_crops.json`\n- FastAPI backend MQTT bridge:\n  - topic cache endpoint: `GET /mqtt/cache`\n  - command publish endpoint: `POST /mqtt/command`\n  - websocket stream: `GET /ws/live`\n  - dual-zone prediction endpoint: `POST /predict/zone`\n  - AgroBot endpoint: `POST /chat`\n  - Firestore-backed MQTT telemetry persistence and AI cache\n- ESP32 firmware in `hardware/smart_irrigation.ino`\n- Firestore security rules:\n  - `firestore.rules` + `firebase.json`\n- ML training pipeline seed script:\n  - `backend/train_model.py` builds `zone_moisture_model.pkl`\n- Pre-filled report template:\n  - `report-template.md`\n  - dual moisture sensors, dual relays, DHT22, flow meter, EEPROM state, MQTT command/telemetry topics\n\n## MQTT topic contract\n\nBase topic: `agromind/{device_id}`\n\n- Subscribe:\n  - `zone_a/pump/command`\n  - `zone_b/pump/command`\n  - `config`\n- Publish:\n  - `zone_a/moisture`\n  - `zone_b/moisture`\n  - `zone_a/pump/status`\n  - `zone_b/pump/status`\n  - `sensors/temperature`\n  - `sensors/humidity`\n  - `flow_rate`\n  - `device/heartbeat`\n\n## Setup\n\n### 1) Environment variables\n- Copy root `.env.example` to `.env`\n- Copy `frontend/.env.example` to `frontend/.env.local`\n\n### 2) Frontend\n1. `cd frontend`\n2. `npm install`\n3. `npm run dev`\n\n### 3) Backend\n1. `cd backend`\n2. `pip install -r requirements.txt`\n3. `uvicorn main:app --reload --port 8000`\n\n### 4) ESP32\n1. Open `hardware/smart_irrigation.ino`\n2. Set WiFi + MQTT credentials\n3. Flash to ESP32\n4. Verify live data at backend `GET /mqtt/cache`\n\n## HiveMQ / EMQX quick guide\n\n1. Create a free cluster on [HiveMQ Cloud](https://www.hivemq.com/mqtt-cloud-broker/) or [EMQX Cloud](https://www.emqx.com/en/cloud).\n2. Create username/password credentials.\n3. Use TCP port `1883` for ESP32 and secure WebSocket endpoint for frontend.\n4. Put broker details in backend and frontend env files.\n\n## Notes\n\n- Current implementation includes core dual-zone architecture and MQTT replacement over ThingSpeak polling.\n- Firebase security rules, PDF report template, and full ML training pipeline can be layered next as a follow-up milestone.\n'''\nwith open('README.md','w') as f:\n    f.write(content)\nPY\n&& git add README.md && git rebase --continue && git push origin HEAD",
+			"args": [],
+			"isBackground": false
+		},
+		{
+			"label": "Continue Rebase and Push",
+			"type": "shell",
+			"command": "cd /Users/tanishqsuryas/Documents/IOT && git add README.md && git rebase --continue && git push origin HEAD",
+			"args": [],
+			"isBackground": false
+		},
+		{
+			"label": "Inspect Rebase State",
+			"type": "shell",
+			"command": "cd /Users/tanishqsuryas/Documents/IOT && git status --short && echo '---' && git rebase --show-current-patch || true",
+			"args": [],
+			"isBackground": false
+		},
+		{
+			"label": "Finish Rebase and Push",
+			"type": "shell",
+			"command": "cd /Users/tanishqsuryas/Documents/IOT && GIT_EDITOR=true git rebase --continue && git push origin HEAD",
+			"args": [],
+			"isBackground": false
+		},
+		{
+			"label": "Check Git State After Rebase",
+			"type": "shell",
+			"command": "cd /Users/tanishqsuryas/Documents/IOT && git status --short && echo '---' && git rebase --show-current-patch || true && git log --oneline --decorate -1",
+			"args": [],
+			"isBackground": false
+		},
+		{
+			"label": "Push to GitHub",
+			"type": "shell",
+			"command": "cd /Users/tanishqsuryas/Documents/IOT && git push origin HEAD"
+		}
+	]
+}
